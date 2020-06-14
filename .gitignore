@@ -1,0 +1,6 @@
+.metals
+.temp
+secret.yml
+yarn-error.log
+node_modules
+
