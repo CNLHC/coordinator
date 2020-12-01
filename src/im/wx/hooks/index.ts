@@ -1,5 +1,5 @@
 
-import fastify from 'fastify'
+import fastify, { FastifyInstance } from 'fastify'
 import { verify_integrity, decrypt_message } from '../sdk/crypto'
 import Relay from '../../../relay'
 import TopicsList from '../../../relay/topic_list'
@@ -8,7 +8,7 @@ import GetConfig from '../../../config/config'
 
 const config = GetConfig().wx
 
-module.exports = async function (app: fastify.FastifyInstance, opts: any) {
+module.exports = async function (app: FastifyInstance, opts: any) {
     app.post('/', async (req, resp) => {
         const recv = decrypt_message({
             aeskey: config.app.recv.aeskey,

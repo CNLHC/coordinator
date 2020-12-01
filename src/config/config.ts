@@ -1,8 +1,11 @@
 const _config =
 {
     redis: {
-        host: 'redis.infrastructure.svc.cluster.local',
-        port: 6379
+        host: 'redis.cnworkshop.xyz',
+        port: 20000,
+        tls: {
+            servername: 'redis.cnworkshop.xyz'
+        }
     },
     wx: {
         corpid: 'wwdeb7a69582c3ebda',
@@ -15,8 +18,15 @@ const _config =
             }
         }
     },
+    lark: {
+        custom_bot: [{
+            key: 'act-sys',
+            uuid: '8dc4e146-18c5-4054-b2a0-d008750bb6d3'
+        }]
+
+    },
     gitlab: {
-        endpoint: 'https://code.cnworkshop.xyz:6443/api/graphql',
+        endpoint: 'https://code.cnworkshop.xyz/api/graphql',
         token: 'DAMXx8-uymzN6QDgCMD1'
     }
 }
@@ -24,4 +34,5 @@ const _config =
 function GetConfig(fp?: string) {
     return _config
 }
+
 export default GetConfig
