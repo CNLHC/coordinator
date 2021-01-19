@@ -1,6 +1,6 @@
 .metals
 .temp
-secret.yml
+*secret.yml
 yarn-error.log
 node_modules
-
+!src/config/type.ts

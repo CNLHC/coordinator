@@ -1,15 +1,31 @@
 import redis, { ClientOpts } from 'redis'
 import GetConfig from '../../config/config';
+import GetLogger from '../../utility/logger';
 
 const gConfig = GetConfig()
-
-const redis_cfg = gConfig.redis
-const subscriber = redis.createClient(redis_cfg);
-const publisher = redis.createClient(redis_cfg);
-
+const gLogger = GetLogger()
+let subscriber: redis.RedisClient
 let hooksTable = new Map<string, Array<(msg: string) => void>>()
+let publisher: redis.RedisClient
 
-subscriber.on('message', (channel, message) => hooksTable.get(channel)?.forEach(cb => cb(message)))
+
+
+function init() {
+    try {
+        const redis_cfg = gConfig.redis
+        console.log(redis_cfg)
+        subscriber = redis.createClient(redis_cfg);
+        publisher = redis.createClient(redis_cfg);
+        subscriber.on('message', (channel, message) => hooksTable.get(channel)?.forEach(cb => cb(message)))
+    } catch (e) {
+        gLogger.error(e)
+
+    }
+}
+
+init()
+
+
 
 
 

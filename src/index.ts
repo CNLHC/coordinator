@@ -8,9 +8,14 @@ import GetConfig from './config/config'
 
 
 async function main() {
-    GetConfig()
-    await InitHooksServer()
-    await InitLarkPublisher()
+    try {
+        GetConfig()
+        await InitHooksServer()
+        await InitLarkPublisher()
+    } catch (e) {
+        console.log(e)
+
+    }
 }
 main()
 
