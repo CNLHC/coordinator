@@ -4,10 +4,10 @@ const config = GetConfig().gitlab
 
 
 const GQLClient = new GraphQLClient(
-    config.endpoint,
+    config[0].endpoint,
     {
         headers: {
-            authorization: `Bearer ${config.token}`,
+            authorization: `Bearer ${config[0].token}`,
         }
     }
 )

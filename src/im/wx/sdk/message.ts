@@ -28,7 +28,7 @@ interface ISendMessagePayload {
 
 export async function send_message(payload: ISendMessagePayload) {
     if (!payload.agentid)
-        payload.agentid = config.app.agentid
+        payload.agentid = config[0].app.agentid
     const url = `https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=${await get_access_token()}`
     return await Axios.post(url,
         payload, {

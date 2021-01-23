@@ -14,10 +14,10 @@ export async function get_access_token() {
     }
 
     const res = await Axios.get("https://qyapi.weixin.qq.com/cgi-bin/gettoken", {
-        params: {
-            corpid: config.corpid,
-            corpsecret: config.app.secret
-        }
+        // params: {
+        //     corpid: config.w,
+        //     corpsecret: config.app.secret
+        // }
     })
 
     if (res.data?.errcode == 0 && res.data?.access_token) {

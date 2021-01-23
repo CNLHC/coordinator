@@ -9,9 +9,9 @@ import GetConfig from '../../../config/config'
 const config = GetConfig().wx
 
 module.exports = async function (app: FastifyInstance, opts: any) {
-    app.post('/', async (req, resp) => {
+    app.post('/', async (req: any, resp) => {
         const recv = decrypt_message({
-            aeskey: config.app.recv.aeskey,
+            aeskey: config[0].app.recv.aeskey,
             encrypted: req.body.xml.Encrypt
         })
         if (recv?.msg) {
@@ -23,9 +23,9 @@ module.exports = async function (app: FastifyInstance, opts: any) {
 
     })
 
-    app.get('/', async (req, resp) => {
+    app.get('/', async (req: any, resp) => {
         if (!verify_integrity({
-            token: config.app.recv.token,
+            token: config[0].app.recv.token,
             encrypted: req.query.echostr,
             nonce: req.query.nonce,
             timestamp: req.query.timestamp,
@@ -35,7 +35,7 @@ module.exports = async function (app: FastifyInstance, opts: any) {
             return
         }
         const res = decrypt_message({
-            aeskey: config.app.recv.aeskey,
+            aeskey: config[0].app.recv.aeskey,
             encrypted: req.query.echostr,
         })
 

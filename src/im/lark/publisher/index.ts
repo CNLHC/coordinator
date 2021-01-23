@@ -5,29 +5,15 @@ import { IGrafanaHooks } from "../../../monitor/grafana/type"
 import Relay from "../../../relay"
 import TopicsList from "../../../relay/topic_list"
 import GetLogger from "../../../utility/logger"
+import { GenLarkBasicDescriptionMsg, GenLarkTextMsg } from "./template"
 
 const config = GetConfig()
 const gLogger = GetLogger()
-const TokenToKey = (token?: string) => {
-    switch (token) {
-        case "40204ecc-b4d6-4ba8-a2d6-6d72eff69f26":
-            return "act-sys"
-        case "test_token":
-        default:
-            return "test"
-    }
-}
-
 
 const GetBotFromNamespace = (ns: string) => config.lark.find(e => e.namespace === ns)?.bots ?? []
 
-const SendLarkBotMessage = (hooks: string, msg: string) => {
-    Axios.post(hooks, {
-        msg_type: "text",
-        content: {
-            "text": msg
-        }
-    }).then(e => {
+const SendLarkBotMessage = (hooks: string, msg: any) => {
+    Axios.post(hooks, msg).then(e => {
         console.log(e.data)
     }).catch(e => {
         console.error(e)
@@ -45,8 +31,19 @@ export function InitLarkPublisher() {
             case "grafana-webhook":
                 const raw = obj.raw as IGrafanaHooks
                 const bots = GetBotFromNamespace(obj.namespace)
+                console.log(raw)
                 for (const bot of bots)
-                    SendLarkBotMessage(bot.hooks, JSON.stringify(raw))
+                    SendLarkBotMessage(bot.hooks, GenLarkBasicDescriptionMsg(
+                        {
+                            title: raw.ruleName,
+                            kvs: {
+                                规则: raw.ruleName,
+                                报警信息: raw.message,
+                                数据地址: raw.ruleUrl.replace('http', 'https').replace(":3000", ""),
+                                状态: raw.state
+                            }
+                        }
+                    ))
                 return
             default: gLogger.error("receive unknown msg ", msg)
         }
