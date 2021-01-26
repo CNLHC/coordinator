@@ -9,6 +9,10 @@ let hooksTable = new Map<string, Array<(msg: string) => void>>()
 let publisher: redis.RedisClient
 
 
+function errorHandler(err: any, role: "sub" | "pub") {
+    gLogger.error(`${role} err:${err}`)
+}
+
 
 function init() {
     try {
@@ -16,9 +20,12 @@ function init() {
             ...gConfig.redis,
             socket_keepalive: true
         }
-        console.log(redis_cfg)
         subscriber = redis.createClient(redis_cfg);
         publisher = redis.createClient(redis_cfg);
+
+        subscriber.on('error', (err) => errorHandler(err, 'sub'))
+        publisher.on('error', (err) => errorHandler(err, 'pub'))
+
         subscriber.on('message', (channel, message) => hooksTable.get(channel)?.forEach(cb => cb(message)))
     } catch (e) {
         gLogger.error(e)
