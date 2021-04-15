@@ -20,7 +20,7 @@ export interface Lark {
 
 export interface Bot {
     name: string;
-    key: string;
+    token: string;
     hooks: string;
 }
 

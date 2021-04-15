@@ -12,9 +12,12 @@ function mapRuleURLToNamespace(r: string) {
 
 module.exports = async function (app: FastifyInstance, opts: any) {
     app.post('/', async (req, resp) => {
+        const query: any = req.query
+        console.log('grafana,hooks', query)
         const Msg: IMessage = {
             source: "grafana-webhook",
             namespace: "YYTG",
+            token: query.token,
             raw: req.body,
         }
         Relay.Publish(TopicsList.LarkBotSend, JSON.stringify(Msg))

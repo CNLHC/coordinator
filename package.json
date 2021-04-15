@@ -1,7 +1,8 @@
 {
   "scripts": {
     "dev": " nodemon --watch .temp .temp/index.js",
-    "compile": "tsc --watch"
+    "compile": "tsc --watch",
+    "build":"tsc"
   },
   "nodemonConfig": {
     "delay": 500,
